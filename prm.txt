@@ -1,0 +1,41 @@
+﻿import re
+from urllib.request import urlopen
+
+url = "http://olympus.realpython.org/profiles"
+page = urlopen(url)
+html = page.read().decode("utf-8")
+print(html)
+
+pattern = "<a.*?>.*?</a.*?>"
+profiles_tags = re.findall(pattern, html, re.IGNORECASE)
+
+profiles=[]
+for i in range (0, len(profiles_tags)):
+  temp=re.sub("<.*?>", "",profiles_tags[i])
+  profiles.append(temp)
+  
+print(profiles)
+print('\n')
+
+
+## SVI PROFILI
+for i in range(0, len(profiles)):
+  page = urlopen(url+'/'+profiles[i].lower())#access page throught a list
+  html = page.read().decode("utf-8")
+  #print(html)
+  dictionary={}
+
+  pattern_keys = "[A-Z].*?:"
+  pattern_values = ":.*?[<\n]"
+  
+  keys = re.findall(pattern_keys, html)
+  values = re.findall(pattern_values, html, re.IGNORECASE)
+  
+  for i in range (0, len(keys)):
+    keys[i] = re.sub(":","", keys[i])
+    values[i] = re.sub("[: <\n]", "", values[i])
+    dictionary[keys[i]]=values[i]
+ 
+  print(dictionary)
+  print('\n')
+ 
