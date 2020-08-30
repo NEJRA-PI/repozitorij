@@ -1,0 +1,17 @@
+import re
+from urllib.request import urlopen
+
+url = "http://olympus.realpython.org/profiles"
+page = urlopen(url)
+html = page.read().decode("utf-8")
+print(html)
+
+pattern = "<a.*?>.*?</a.*?>"
+profiles_tags = re.findall(pattern, html, re.IGNORECASE)
+
+profiles=[]
+for i in range (0, len(profiles_tags)):
+  temp=re.sub("<.*?>", "",profiles_tags[i])
+  profiles.append(temp)
+  
+print(profiles)
